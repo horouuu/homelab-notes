@@ -145,6 +145,7 @@ PreDown = ip route flush table 200
 - [ ] Test using `wg-quick up wg0`. Leave it up if no errors occur.
 
 At this point, the setup should be complete.
+
 **CHECK**:
 - [ ] `curl https://am.i.mullvad.net/json | jq` from the **client VM**.
     - The following is an example of what should be received (I redacted the IP here ): 
@@ -169,6 +170,8 @@ At this point, the setup should be complete.
     - From another shell, use `nslookup google.com` or perform a query that would otherwise perform a DNS lookup.
     - The logs from `tcpdump` should reflect lookups to Mullvad's internal DNS server `10.64.0.1`.
 
+---
+
 ### 6. SNAT (optional)
 Mullvad applies SNAT to your packets, but for completeness this section will be included anyway.
 We may use `nftables` to achieve SNAT between the client VM and the gateway VM:
@@ -180,7 +183,7 @@ table ip vpn_nat {
         }
 }
 ```
-A few explanations: \
+A few explanations:
 > `chain postrouting`
 This means the packets will be processed **after** routing is decided.
 
@@ -206,9 +209,13 @@ IP source address.
 All source will now share wg0's interface IP address.
 
 There are two ways to implement this:
-`nft 'add chain ip vpn_nat postrouting { type nat hook postrouting priority srcnat; policy accept; }'`
+> `nft 'add chain ip vpn_nat postrouting { type nat hook postrouting priority srcnat; policy accept; }'`
 or
-Modify `/etc/nftables.conf` to include the above code block.
+> Modify `/etc/nftables.conf` to include the above code block.
+
+Note that it can only be persisted through the config file and enabling `nftables` through `systemctl`.
+
+---
 
 ## List of Tools Used
 1. `ip`
