@@ -111,6 +111,7 @@ To accommodate for the first rule, we will have to create a routing table that d
     - Replace `ens34` with the interface name of the virtual network adapter shared with the client VM.
 - [ ] Create rule no. 2: `ip rule from 10.10.10.0/24 lookup main priority 999`
     - `10.10.10.0/24` can be narrowed down to just a single VM: `10.10.10.2`.
+- [ ] Enable IPv4 forwarding using `sysctl -w net.ipv4.ip_forward=1`, then `sysctl --system` to apply.
 
 **CHECK**:
 - [ ] FROM the **client VM**, `ping -c 5 host_ip` does **NOT** work.
@@ -143,6 +144,11 @@ PreDown = ip route flush table 200
 - [ ] Add the persistence section to `/etc/wireguard/wg0.conf`.
 - [ ] Test using `wg-quick down wg0` and `ip rule show && ip route show table 200`.
 - [ ] Test using `wg-quick up wg0`. Leave it up if no errors occur.
+
+**PERSISTENCE FOR OTHER SERVICES**
+- [ ] `systemctl enable wg-quick@wg0` to automatically activate WireGuard on boot.
+- [ ] `systemctl enable nftables` to automatically enable nftables on boot.
+- [ ] `sysctl -w net.ipv4.ip_forward=1` to persist IPv4 forwarding.
 
 At this point, the setup should be complete.
 
