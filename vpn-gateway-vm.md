@@ -39,7 +39,8 @@ As we want to be able to use the VPN **without** exposing its credentials to the
 
 Mullvad does **not** have inverse split-tunneling, which makes it rather inconvenient to use on the host. Therefore, we use a gateway VM. We will use a lightweight, headless distribution of debian: `debian-13.7.0-amd64-netinst`. The following is the checklist for this step:
 - [ ] Install `debian` & configure securely
-- [ ] [Install Mullvad](https://mullvad.net/en/download/vpn/linux) & WireGuard `sudo apt install wireguard wireguard-tools`
+- [ ] Install WireGuard `sudo apt install wireguard wireguard-tools`
+- [ ] Generate a Mullvad WireGuard key from [here](https://mullvad.net/en/account/wireguard-config)
 - [ ] Configure Mullvad account login
 
 ---
